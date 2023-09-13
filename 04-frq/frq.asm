@@ -1,4 +1,5 @@
-.include "../t88.inc/macros.inc"
+.include "../t88.inc/sys.inc"
+.include "../t88.inc/port.inc"
 
 .cseg
 .org 0x000
@@ -27,7 +28,7 @@
 reset: 
        init_stack RAMEND_T88
        ;------------
-       setDDRD (1<<PIND0)
+       set_ddr DDRD, (1<<PIND0)
        ;------------
        ldi r16,0x32   ; ~ 26 uSec - it's uart char 'U' 
        out OCR0A,r16  ;
@@ -46,6 +47,6 @@ compa:
        cpi r16, 0x1
        brne exit
        clr r16
-       invPORTD (1<<PIND0)
+       inv_pins PORTD, (1<<PIND0)
 exit: 
       reti

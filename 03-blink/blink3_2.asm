@@ -1,4 +1,5 @@
-.include "../t88.inc/macros.inc"
+.include "../t88.inc/sys.inc"
+.include "../t88.inc/port.inc"
 
 .cseg
 .org 0x000
@@ -26,7 +27,7 @@
 reset:  
        init_stack RAMEND_T88
        ;------------
-       setDDRD (1<<PIND0)
+       set_ddr DDRD, (1<<PIND0)
        ;------------
        ldi r16,0x01   ; Overflow Interrupt Enable
        sts TIMSK0,r16
@@ -42,7 +43,7 @@ overf:
        inc r16
        cpi r16, 0x3e
        brne exit
-       invPORTD (1<<PIND0)
+       inv_pins PORTD, (1<<PIND0)
        clr r16
 exit: 
        reti

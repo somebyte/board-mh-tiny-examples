@@ -1,15 +1,15 @@
-.include "../t88.inc/macros.inc"
+.include "../t88.inc/sys.inc"
+.include "../t88.inc/port.inc"
 
 .cseg
 .org 0x00
        init_stack RAMEND_T88
 ; setup data direction
-       setDDRD  (1<<PIND0)
-
+       set_ddr  DDRD,  (1<<PIND0)
 ; led on
-       setPORTD (1<<PIND0)
+       set_pins PORTD, (1<<PIND0)
 loop:
-       invPORTD (1<<PIND0)
+       inv_pins PORTD, (1<<PIND0)
        clr  r16
 p1:    inc  r16
        clr  r17

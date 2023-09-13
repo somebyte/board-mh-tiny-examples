@@ -1,4 +1,6 @@
-.include "../t88.inc/macros.inc"
+.include "../t88.inc/sys.inc"
+.include "../t88.inc/port.inc"
+.include "../t88.inc/timers.inc"
 
 .cseg
 .org 0x000
@@ -31,11 +33,11 @@ setz:  ; init str
        ldi ZH, 0x00
        ldi ZL, LOW(2*str)
        ; set D0 - output
-       setDDRD  (1<<PIND0)
+       set_ddr  DDRD,  (1<<PIND0)
        ; set D0 - ON (1)
-       setPORTD (1<<PIND0)
+       set_pins PORTD, (1<<PIND0)
        ; setup timer
-       setTimerA_us 26 ; 38400 baud
+       set_timer0_us 26 ; 38400 baud
        ; setup int1
        ldi r16,0x8
        sts EICRA,r16
@@ -57,10 +59,10 @@ compa:
       andi r18,   0x1
       cpi  r18,   0
       breq clrbit   
-      setPORTD (1<<PIND0)
+      set_pins PORTD, (1<<PIND0)
       rjmp nextbit
 clrbit:
-      clrPORTD (1<<PIND0)
+      clr_pins PORTD, (1<<PIND0)
 nextbit:
       ; next bit
       lsr  r17
@@ -68,12 +70,12 @@ nextbit:
       rjmp exit
 stopbit:
       ; set stop bit
-      setPORTD (1<<PIND0)
+      set_pins PORTD, (1<<PIND0)
       clr r16
       rjmp exit
 startbit:
       ; set start bit
-      clrPORTD (1<<PIND0)
+      clr_pins PORTD, (1<<PIND0)
       ; first bit
       inc  r16
       ; next symbol

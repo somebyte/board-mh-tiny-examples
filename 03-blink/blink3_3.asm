@@ -1,4 +1,5 @@
-.include "../t88.inc/macros.inc"
+.include "../t88.inc/sys.inc"
+.include "../t88.inc/port.inc"
 
 .cseg
 .org 0x000
@@ -27,7 +28,7 @@
 reset: 
        init_stack RAMEND_T88
        ;------------
-       setDDRD (1<<PIND0)
+       set_ddr DDRD, (1<<PIND0)
        ;------------
        ldi r16,0x3F   ; Value OCRA0
        out OCR0A,r16  ; OCR0A – Output Compare Register A
@@ -46,7 +47,7 @@ compa:
        inc r16
        cpi r16, 0x3E
        brne exit
-       invPORTD (1<<PIND0)
+       inv_pins PORTD, (1<<PIND0)
        clr r16
 exit: 
        reti
