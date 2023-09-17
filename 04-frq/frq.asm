@@ -26,27 +26,27 @@
        reti        ; 20 | 0x013 | TWI          | 2-wire Serial Interface
 
 reset: 
-       init_stack RAMEND_T88
-       ;------------
-       set_ddr DDRD, (1<<PIND0)
-       ;------------
-       ldi r16,0x32   ; ~ 26 uSec - it's uart char 'U' 
-       out OCR0A,r16  ;
-       ldi r16,0x02   ; Timer/Counter0 Output Compare Match A Interrupt Enable
-       sts TIMSK0,r16 ; 
-       ldi r16,0x0A   ; Compare mode; clkIO/8
-       out TCCR0B,r16 ; TCCR0A(Tiny88) = TCCR0B(Atmega88) = 0x25 
-       clr r16
-       out TCNT0,r16
-       sei 
+	stack_setup RAMEND_T88
+	;------------
+	ddr_setup DDRD, (1<<PIND0)
+	;------------
+	ldi r16,0x32   ; ~ 26 uSec - it's uart char 'U' 
+	out OCR0A,r16  ;
+	ldi r16,0x02   ; Timer/Counter0 Output Compare Match A Interrupt Enable
+	sts TIMSK0,r16 ; 
+	ldi r16,0x0A   ; Compare mode; clkIO/8
+	out TCCR0B,r16 ; TCCR0A(Tiny88) = TCCR0B(Atmega88) = 0x25 
+	clr r16
+	out TCNT0,r16
+	sei 
 loop: 
-       sleep
-       rjmp loop   
+	sleep
+	rjmp loop   
 compa:
-       inc r16
-       cpi r16, 0x1
-       brne exit
-       clr r16
-       inv_pins PORTD, (1<<PIND0)
-exit: 
-      reti
+	inc r16
+	cpi r16, 0x1
+	brne exit
+	port_invertion PORTD, (1<<PIND0)
+	clr r16
+exit:
+	reti

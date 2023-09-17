@@ -12,5 +12,3 @@ or
 $ make blink3_3
 $ make load 
 `````
-Choose my hero! & See 00-led/README.md
-
