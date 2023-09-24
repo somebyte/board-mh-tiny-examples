@@ -24,7 +24,6 @@
 .endmacro
 
 .macro  timer0A_setup_us
-	push r16
 	lds  r16,TIMSK0
 	andi r16,0xFD
 	sts  TIMSK0,r16
